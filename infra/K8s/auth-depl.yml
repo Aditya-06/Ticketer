@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    # to find all the pods
+    matchLabels:
+      app: auth
+  # Config of the pod
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      # Which container to look out for
+      containers:
+        - name: auth
+          image: adityaajmera/auth
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+---
+# Create the auth service -> sets up a cluster IP
+# Cluster IPs enable communication between various pods inside a cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  # How to recognize where traffic should be directed
+  selector:
+    app: auth-srv
+  ports:
+    - name: auth
+      # Service runs on port 3000
+      port: 3000
+      targetPort: 3000

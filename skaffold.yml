@@ -1,0 +1,26 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+# All the config files we want to load
+deploy:
+  kubectl:
+    # All files in K8s dir
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    # Do not push to dockerhub on build
+    push: false
+  artifacts:
+    # Name of the image
+    - image: adityaajmera/auth
+      # Some pod will run inside -> "Frontend" directory
+      context: auth
+      # Which docker file should be used?
+      docker:
+        dockerfile: Dockerfile
+      # If any js file inside src changes -> just manually copy paste changes w/o rebuilding image
+      # Basically sync all js files inside src
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
