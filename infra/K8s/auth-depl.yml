@@ -14,27 +14,24 @@ spec:
       labels:
         app: auth
     spec:
-      # Which container to look out for
       containers:
+        # Which container to look out for
         - name: auth
           image: adityaajmera/auth
-          resources:
-            limits:
-              memory: '128Mi'
-              cpu: '500m'
----
 # Create the auth service -> sets up a cluster IP
 # Cluster IPs enable communication between various pods inside a cluster
+---
 apiVersion: v1
 kind: Service
+# How to recognize where traffic should be directed
 metadata:
   name: auth-srv
 spec:
-  # How to recognize where traffic should be directed
   selector:
-    app: auth-srv
+    app: auth
   ports:
     - name: auth
-      # Service runs on port 3000
+      protocol: TCP
+      # Service runs on Port 3000
       port: 3000
       targetPort: 3000

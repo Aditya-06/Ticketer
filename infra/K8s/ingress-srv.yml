@@ -1,0 +1,22 @@
+# Tell ingress how to handle the routes
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    # Some pretend domain name we access from out own machine
+    - host: ticketer.com
+      http:
+        paths:
+          # Anything with user/ should be sent to the auth service
+          - path: /api/users/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-srv
+                port:
+                  number: 3000
