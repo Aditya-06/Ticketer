@@ -1,40 +1,21 @@
-// import express from 'express';
-// // import routes from './routes/route';
-
-// const app = express();
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-
-// // app.use('/api/user', routes);
-
-// app.get('/api/users/currentUser', (req, res) => {
-//   console.log('API called');
-//   res.send('Hello there!');
-// });
-
-// app.get('/', (req, res) => {
-//   console.log('API called');
-//   res.send('Hello there!');
-// });
-
-// const PORT = process.env.PORT || 3000;
-
-// app.listen(PORT, () => {
-//   console.log(`Listening on port ${PORT}`);
-// });
-
 import express from 'express';
-// import { json } from 'body-parser';
+import { currentUserRouter } from './routes/current-user';
+import { signInRouter } from './routes/signin';
+import { signoutRouter } from './routes/signout';
+import { signupRouter } from './routes/signup';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use(json());
 
-app.get('/api/users/currentuser', (req, res) => {
-  res.send('Hi there!');
-});
+// use all the routes created
+app.use(currentUserRouter);
+app.use(signInRouter);
+app.use(signoutRouter);
+app.use(signupRouter);
 
-app.listen(3000, () => {
-  console.log('Listening on port 3000!!!!!!!!');
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
 });
