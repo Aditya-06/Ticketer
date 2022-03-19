@@ -21,11 +21,13 @@ router.post(
 
     // if the express-validators has found any errors, send appropriate error message
     if (!errors.isEmpty()) {
-      return res.status(400).send(errors.array());
+      throw new Error('Invalid username or password');
+      // return res.status(400).send(errors.array());
     }
 
     const { email, password } = req.body;
     console.log('Creating a User.');
+    throw new Error('Error connecting to DB');
     return res.send('Creating a user');
   }
 );
