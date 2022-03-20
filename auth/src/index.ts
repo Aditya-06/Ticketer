@@ -7,6 +7,7 @@ import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
 
 import { errorHandler } from './middlewares/error-handlers';
+import { NotFoundError } from './errors/not-found-error';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +18,12 @@ app.use(currentUserRouter);
 app.use(signInRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
+
+// in case the route hit does not exist
+app.all('*', () => {
+  console.log('Not found');
+  throw new NotFoundError();
+});
 
 // error-handler
 app.use(errorHandler);
