@@ -15,14 +15,14 @@ router.post(
       .isLength({ min: 6, max: 20 })
       .withMessage('Password must be 6-20 characters'),
   ],
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     console.log('API called');
 
     // did some error occur during validation?
     const errors = validationResult(req);
 
     // if the express-validators has found any errors, send appropriate error message
-    // for any errors regarding the request body, we have created a 
+    // for any errors regarding the request body, we have created a
     if (!errors.isEmpty()) {
       throw new RequestValidationError(errors.array());
     }

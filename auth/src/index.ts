@@ -1,4 +1,6 @@
 import express from 'express';
+// import library to overwrite 'next' behaviour of express in async functions
+import 'express-async-errors';
 
 // import routes
 import { currentUserRouter } from './routes/current-user';
@@ -20,7 +22,8 @@ app.use(signoutRouter);
 app.use(signupRouter);
 
 // in case the route hit does not exist
-app.all('*', () => {
+// in case of async, express relies on next() to handle errors
+app.all('*', async (req, res, next) => {
   console.log('Not found');
   throw new NotFoundError();
 });
