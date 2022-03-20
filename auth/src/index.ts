@@ -8,8 +8,12 @@ import { signInRouter } from './routes/signin';
 import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
 
+// stuff to do with errors
 import { errorHandler } from './middlewares/error-handlers';
 import { NotFoundError } from './errors/not-found-error';
+
+// Database configurations
+import { startDb } from './config/db';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -33,6 +37,13 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+const start = async () => {
+  try {
+    await startDb();
+  } catch (error) {}
+  app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+  });
+};
+
+start();
