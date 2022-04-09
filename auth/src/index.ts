@@ -1,6 +1,7 @@
 import express from 'express';
 // import library to overwrite 'next' behaviour of express in async functions
 import 'express-async-errors';
+import cookieSession from 'cookie-session';
 
 // import routes
 import { currentUserRouter } from './routes/current-user';
@@ -16,8 +17,15 @@ import { NotFoundError } from './errors/not-found-error';
 import { startDb } from './config/db';
 
 const app = express();
+app.set('trust proxy', true);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(
+  cookieSession({
+    signed: false,
+    secure: true,
+  })
+);
 
 // use all the routes created
 app.use(currentUserRouter);

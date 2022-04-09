@@ -1,4 +1,5 @@
 import mongoose, { Model, Document } from 'mongoose';
+import { Password } from '../services/password';
 
 // User interface required to create a user
 // we need to make sure the type matches in acc to attrs
@@ -28,6 +29,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+});
+
+// hash the password everytime it is supplied
+// we don't use the arrow function because data in 'this' keyword will be lost
+userSchema.pre('save', async function (done) {
+  if (this.isModified('password')) {
+    const hashed = await Password.toHash(this.get('password'));
+    this.set('password', hashed);
+  }
+  done();
 });
 
 // add the type checking as a static function to make things easier

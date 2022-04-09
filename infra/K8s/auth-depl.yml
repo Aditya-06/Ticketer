@@ -18,6 +18,12 @@ spec:
         # Which container to look out for
         - name: auth
           image: adityaajmera/auth
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 # Create the auth service -> sets up a cluster IP
 # Cluster IPs enable communication between various pods inside a cluster
 ---

@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
 import { body, validationResult } from 'express-validator';
 import { RequestValidationError } from '../errors/request-validation-error';
@@ -44,6 +45,22 @@ router.post(
     // try {
     const user = User.build({ email, password });
     await user.save();
+
+    // generate JSON web token
+    const userjwt = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      // we overwrite TS checking because we have already made a check for this in the DB file
+      process.env.JWT_KEY!
+    );
+
+    // store token in session object
+    req.session = {
+      jwt: userjwt,
+    };
+
     return res.send(user);
     // } catch (error) {
     //   throw new DatabaseConnectionError();
