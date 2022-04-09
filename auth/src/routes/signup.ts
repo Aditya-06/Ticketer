@@ -1,10 +1,11 @@
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { body, validationResult } from 'express-validator';
-import { RequestValidationError } from '../errors/request-validation-error';
+import { body } from 'express-validator';
 import { DatabaseConnectionError } from '../errors/database-connection-error';
 import { BadRequestError } from '../errors/bad-request-error';
+
+import { validateRequest } from '../middlewares/validate-requests';
 
 import { User } from '../models/User';
 
@@ -20,18 +21,8 @@ router.post(
       .isLength({ min: 6, max: 20 })
       .withMessage('Password must be 6-20 characters'),
   ],
+  validateRequest,
   async (req: Request, res: Response) => {
-    console.log('API called');
-
-    // did some error occur during validation?
-    const errors = validationResult(req);
-
-    // if the express-validators has found any errors, send appropriate error message
-    // for any errors regarding the request body, we have created a
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
-
     const { email, password } = req.body;
 
     const existingUser = await User.findOne({ email });

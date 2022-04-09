@@ -2,6 +2,7 @@ import express from 'express';
 // import library to overwrite 'next' behaviour of express in async functions
 import 'express-async-errors';
 import cookieSession from 'cookie-session';
+import morgan from 'morgan';
 
 // import routes
 import { currentUserRouter } from './routes/current-user';
@@ -27,6 +28,8 @@ app.use(
   })
 );
 
+// API logger
+app.use(morgan('tiny'));
 // use all the routes created
 app.use(currentUserRouter);
 app.use(signInRouter);

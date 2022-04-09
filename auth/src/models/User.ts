@@ -31,6 +31,18 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// we want somew transformations to the object (only id instead of _id and no password)
+userSchema.set('toJSON', {
+  // doc -> the mongoose document
+  // ret -> the JSON object we want to return
+  transform(doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.password;
+    delete ret.__v;
+  },
+});
+
 // hash the password everytime it is supplied
 // we don't use the arrow function because data in 'this' keyword will be lost
 userSchema.pre('save', async function (done) {
