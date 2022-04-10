@@ -8,13 +8,15 @@ interface UserAttrs {
   password: string;
 }
 
-// interface that deinfes the properties of the model
+// interface that deinfes the properties of the model -> We want to add build
 // we are adding the build property to the user model and we need to inform typescript about it
+// This defines properties the entire User collection will have i.e -> build
 interface UserModel extends Model<UserDoc> {
   build(attrs: UserAttrs): UserDoc;
 }
 
 // we will need another interface which will define which properties the user Document should have
+// This defines properties an individual user must have
 interface UserDoc extends Document {
   email: string;
   password: string;
@@ -54,6 +56,7 @@ userSchema.pre('save', async function (done) {
 });
 
 // add the type checking as a static function to make things easier
+// This basically checks whether all attrs being passsed meet the requirement
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
