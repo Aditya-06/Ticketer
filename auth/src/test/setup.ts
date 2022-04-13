@@ -7,6 +7,8 @@ let mongo: any;
 
 // run this function before all the tests
 beforeAll(async () => {
+  // since secret is configured in pod, need to deifne key
+  process.env.JWT_KEY = 'asdfg';
   // start up mongo-memory-server
   mongo = new MongoMemoryServer();
   const mongoUri = await mongo.getUri();

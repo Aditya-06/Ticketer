@@ -52,10 +52,8 @@ router.post(
       jwt: userjwt,
     };
 
+    res.statusCode = 201;
     return res.send(user);
-    // } catch (error) {
-    //   throw new DatabaseConnectionError();
-    // }
   }
 );
 
