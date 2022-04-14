@@ -13,7 +13,7 @@ build:
   artifacts:
     # Name of the image
     - image: adityaajmera/auth
-      # Some pod will run inside -> "Frontend" directory
+      # Some pod will run inside -> "auth" directory
       context: auth
       # Which docker file should be used?
       docker:

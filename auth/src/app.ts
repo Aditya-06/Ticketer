@@ -21,7 +21,8 @@ app.use(express.json());
 app.use(
   cookieSession({
     signed: false,
-    secure: true,
+    // during testing, secure needs to be false for the cookie to be set
+    secure: process.env.NODE_ENV !== 'test',
   })
 );
 

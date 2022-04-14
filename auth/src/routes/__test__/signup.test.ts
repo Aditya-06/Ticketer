@@ -58,3 +58,17 @@ it('returns 400 on duplicate email', async () => {
     })
     .expect(400);
 });
+
+it('sets a cookie after successful signup', async () => {
+  // send a body and expect a 201 response code
+  const response = await request(app)
+    .post('/api/users/signup')
+    .send({
+      email: 'adityaajmera@gmail.com',
+      password: '123@pass',
+    })
+    .expect(201);
+
+  // look into the headers that have been set -> check if cookie has been set
+  expect(response.get('Set-Cookie')).toBeDefined();
+});
