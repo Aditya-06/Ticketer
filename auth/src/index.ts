@@ -8,7 +8,9 @@ const start = async () => {
   try {
     // connect the server to the database
     await startDb();
-  } catch (error) {}
+  } catch (error) {
+    // console.log(error);
+  }
   app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
   });
