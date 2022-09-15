@@ -11,8 +11,7 @@ import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
 
 // stuff to do with errors
-import { errorHandler } from './middlewares/error-handlers';
-import { NotFoundError } from './errors/not-found-error';
+import { errorHandler, NotFoundError } from '@aaticketer/common';
 
 const app = express();
 app.set('trust proxy', true);

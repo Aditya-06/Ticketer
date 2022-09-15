@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { currentUser } from '../middlewares/current-user';
+import { currentUser } from '@aaticketer/common';
 
 const router = express.Router();
 

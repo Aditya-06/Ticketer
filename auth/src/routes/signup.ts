@@ -2,10 +2,11 @@ import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { body } from 'express-validator';
-import { DatabaseConnectionError } from '../errors/database-connection-error';
-import { BadRequestError } from '../errors/bad-request-error';
-
-import { validateRequest } from '../middlewares/validate-requests';
+import {
+  DatabaseConnectionError,
+  BadRequestError,
+  validateRequest,
+} from '@aaticketer/common';
 
 import { User } from '../models/User';
 
