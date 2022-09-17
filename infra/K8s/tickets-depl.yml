@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-depl
+  name: tickets-depl
 spec:
   replicas: 1
   selector:
     # to find all the pods
     matchLabels:
-      app: auth
+      app: tickets
   # Config of the pod
   template:
     metadata:
       labels:
-        app: auth
+        app: tickets
     spec:
       containers:
         # Which container to look out for
-        - name: auth
-          image: adityaajmera/auth
+        - name: tickets
+          image: adityaajmera/tickets
           env:
             - name: JWT_KEY
               valueFrom:
@@ -25,20 +25,21 @@ spec:
                   name: jwt-secret
                   key: JWT_KEY
             - name: MONGO_URI
-              value: "mongodb://auth-mongo-srv:27017/auth"
-# Create the auth service -> sets up a cluster IP
+              value: 'mongodb://tickets-mongo-srv:27017/tickets'
+
+# Create the tickets service -> sets up a cluster IP
 # Cluster IPs enable communication between various pods inside a cluster
 ---
 apiVersion: v1
 kind: Service
 # How to recognize where traffic should be directed
 metadata:
-  name: auth-srv
+  name: tickets-srv
 spec:
   selector:
-    app: auth
+    app: tickets
   ports:
-    - name: auth
+    - name: tickets
       protocol: TCP
       # Service runs on Port 3000
       port: 3000

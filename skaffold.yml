@@ -24,6 +24,8 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+
+    # For the Client
     - image: adityaajmera/ticketing-client
       context: client
       docker:
@@ -31,4 +33,18 @@ build:
       sync:
         manual:
           - src: '**/*.js'
+            dest: .
+
+    # For the Ticketing service
+    - image: adityaajmera/tickets
+      # Some pod will run inside -> "tickets" directory
+      context: ticketing
+      # Which docker file should be used?
+      docker:
+        dockerfile: Dockerfile
+      # If any js file inside src changes -> just manually copy paste changes w/o rebuilding image
+      # Basically sync all js files inside src
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
             dest: .
