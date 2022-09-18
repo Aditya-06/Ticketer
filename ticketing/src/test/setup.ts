@@ -2,6 +2,7 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
+import jwt from 'jsonwebtoken';
 
 import { app } from '../app';
 
@@ -9,9 +10,8 @@ let mongo: any;
 
 // declare a global function to allow cookies to be set in after sign in
 declare global {
-  var signup: () => Promise<string[]>;
+  var signin: () => string[];
 }
-
 // run this function before all the tests
 beforeAll(async () => {
   // since secret is configured in pod, need to deifne key
@@ -40,20 +40,28 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.signup = async () => {
-  const email = 'adi@gmail.com';
-  const password = '123#pass';
+global.signin = () => {
+  // Build a Jsonwebtoken payload
+  // {id, email}
+  const payload = {
+    // we can use a random id and email
+    id: '32nrfu',
+    email: 'aditya@gmail.com',
+  };
 
-  // Sign in using an email to get a cookie
-  const response = await request(app)
-    .post('/api/users/signup')
-    .send({
-      email,
-      password,
-    })
-    .expect(201);
+  // Create a jsonwebtoken
+  const token = jwt.sign(payload, process.env.JWT_KEY!);
 
-  // set the cookir received
-  const cookie = response.get('Set-Cookie');
-  return cookie;
+  // Build session object
+  // {jwt: MY_JWT}
+  const session = { jwt: token };
+
+  // turn session in JSON
+  const sessionJSON = JSON.stringify(session);
+
+  // Take JSON and encode as BASE64
+  const base64 = Buffer.from(sessionJSON).toString('base64');
+
+  //return string with encoded data
+  return [`session=${base64}`];
 };

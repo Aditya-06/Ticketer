@@ -4,9 +4,11 @@ import 'express-async-errors';
 import cookieSession from 'cookie-session';
 import morgan from 'morgan';
 
-// stuff to do with errors
-import { errorHandler } from './middlewares/error-handlers';
-import { NotFoundError } from './errors/not-found-error';
+// import our custom package
+import { errorHandler, NotFoundError, currentUser } from '@aaticketer/common';
+
+// Import routes
+import { createTicketRouter } from './routes/new';
 
 const app = express();
 app.set('trust proxy', true);
@@ -20,8 +22,13 @@ app.use(
   })
 );
 
+// Use the middleware imported
+app.use(currentUser);
+
 // API logger
 app.use(morgan('tiny'));
+
+app.use(createTicketRouter);
 
 // in case the route hit does not exist
 // in case of async, express relies on next() to handle errors
