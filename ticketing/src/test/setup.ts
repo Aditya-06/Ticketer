@@ -45,7 +45,8 @@ global.signin = () => {
   // {id, email}
   const payload = {
     // we can use a random id and email
-    id: '32nrfu',
+    // Id should be a valid mongodb id
+    id: new mongoose.Types.ObjectId().toHexString(),
     email: 'aditya@gmail.com',
   };
 
