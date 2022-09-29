@@ -15,17 +15,20 @@ spec:
       containers:
         - name: nats
           image: nats-streaming:0.17.0
-          args:
-            [
+          args: [
               '-p',
               '4222',
               '-m',
               '8222',
+              # HB stands for heart beat - for the health monitering of all clients
+              # hbi: at what frequency will the client be asked for a heartbeat
               '-hbi',
               '5s',
+              # hbt stands for how long the client has to respond
               '-hbt',
               '5s',
               '-hbf',
+              # Number of times each client can fail before NATS considers a client to be offline
               '2',
               '-SD',
               '-cid',
