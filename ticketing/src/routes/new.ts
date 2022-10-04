@@ -28,11 +28,11 @@ router.post(
     await ticket.save();
 
     // publish the fact the ticket has been created
-    new TicketCreatedPublisher(client).publish({
-      id: ticket.id,
-      title: ticket.title,
-      price: ticket.price,
-    });
+    // new TicketCreatedPublisher(client).publish({
+    //   id: ticket.id,
+    //   title: ticket.title,
+    //   price: ticket.price,
+    // });
     res.status(201).send(ticket);
   }
 );
